@@ -3,30 +3,36 @@ import React, {Component} from "react";
 class Application extends Component {
     constructor(props) {
         super(props);
-    }
-
-    componentWillMount(props, state) {
-    }
-
-    componentDidMount(props, state) {
-        console.log("Mounted with", props, state);
-    }
-    componentWillReceiveProps(props) {
-    }
-    componentWillUpdate(props,state) {
-        if(this.props.name!==props.name){
-
+        this.state = {
+            count: 0,
+            overTen: false
         }
     }
-    componentDidUpdate(props,state) {
+
+    handleClick = () => {
+        this.setState({count: this.state.count + 1})
+    }
+
+    componentDidUpdate(props, state) {
+        if (this.state.count > 10 && this.state.count != state.count && !this.state.overTen) {
+            console.log("Updating over 10");
+            this.setState({overTen: true});
+        }
     }
 
     render() {
-        let name = "Nicks";
+        let {count} = this.state;
         return (
             <div>
-                <h1>Hello, {name}</h1>
-                <span>this</span>
+                <h1>You clicked the button {count} times</h1>
+                {(this.state.overTen) ?
+                    <h3>Beat high score of 10!</h3>
+                    : null
+                }
+
+                <span>
+                    <button onClick={() => this.handleClick()}>Click Me</button>
+                </span>
             </div>
         );
     }
